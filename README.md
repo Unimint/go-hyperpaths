@@ -4,7 +4,7 @@ Just implementation of [Spiess, H. and Florian, M. (1989) "Optimal strategies: A
 
 ## Algorithm
 
-Here is copy of algorithm in MathJax (for the LaTeX see [spiess_floarian.tex][./spiess_floarian.tex]):
+Here is copy of algorithm in MathJax (for the LaTeX see [spiess_floarian.tex](./spiess_floarian.tex)):
 
 ### Part 1: Find optimal strategy
 
@@ -35,9 +35,15 @@ Here is copy of algorithm in MathJax (for the LaTeX see [spiess_floarian.tex][./
 
 ## How to use
 
-```go
-// @todo
-```
+* Get the package:
+   ```shell
+   go get github.com/lddl/go-hyperpaths
+   ```
+
+* Code (you can find it in [examples/paper](./examples/paper))
+   ```go
+   // @todo
+   ```
 
 ## References
 Spiess, H. and Florian, M. (1989) "Optimal strategies: A new assignment model for transit networks". Transportation Research Part B: Methodological, 23(2), 83-102. Available in: https://doi.org/10.1016/0191-2615(89)90034-9

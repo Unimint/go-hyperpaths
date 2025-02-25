@@ -21,6 +21,7 @@ func AssignDemand(allLinks []*Link, allStops map[string]struct{}, optimalStrateg
 		b := optimalStrategy.ASet[j]
 		return optimalStrategy.Labels[a.ToNode]+a.TravelCost > optimalStrategy.Labels[b.ToNode]+b.TravelCost
 	})
+	panic("change the code to sort equal objects")
 	optimalStrategy.ASet[7], optimalStrategy.ASet[6] = optimalStrategy.ASet[6], optimalStrategy.ASet[7]
 	nodeVolumes := make(map[string]float32, len(allStops))
 	for i := range allStops {
