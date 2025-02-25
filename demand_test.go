@@ -104,6 +104,7 @@ func TestAssignDemand(t *testing.T) {
 		}
 	}
 	for i, nodeVolume := range volumes.Nodes {
+		assert.Contains(t, correctVolumes.Nodes, i, "No node in correct volumes data")
 		assert.InDelta(t, nodeVolume, correctVolumes.Nodes[i], eps, "Incorrect volume in node %d", i)
 	}
 }

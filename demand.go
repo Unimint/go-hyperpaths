@@ -15,14 +15,11 @@ type Volumes struct {
 
 func AssignDemand(allLinks []*Link, allStops map[string]struct{}, optimalStrategy *Strategy, trips map[string]map[string]float32, destination string) *Volumes {
 	// Sort attractive links set by u{j} + c{a} in descending order
-	// @todo: could be optimized if we collect ASet as max-heap in FindOptimalStrategy()
 	sort.Slice(optimalStrategy.ASet, func(i, j int) bool {
 		a := optimalStrategy.ASet[i]
 		b := optimalStrategy.ASet[j]
-		return optimalStrategy.Labels[a.ToNode]+a.TravelCost > optimalStrategy.Labels[b.ToNode]+b.TravelCost
+		return optimalStrategy.Labels[a.ToNode]+a.TravelCost >= optimalStrategy.Labels[b.ToNode]+b.TravelCost
 	})
-	panic("change the code to sort equal objects")
-	optimalStrategy.ASet[7], optimalStrategy.ASet[6] = optimalStrategy.ASet[6], optimalStrategy.ASet[7]
 	nodeVolumes := make(map[string]float32, len(allStops))
 	for i := range allStops {
 		nodeVolumes[i] = 0
