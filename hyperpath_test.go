@@ -6,10 +6,6 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-const (
-	eps = 1e-20
-)
-
 func TestHyperPaths(t *testing.T) {
 	// Test right from the paper
 	allNodes := map[string]struct{}{
@@ -63,6 +59,7 @@ func TestHyperPaths(t *testing.T) {
 	assert.Equal(t, len(ops.Labels), len(correctOps.Labels), "Incorrect number of labels")
 	assert.Equal(t, len(ops.Freqs), len(correctOps.Freqs), "Incorrect number of frequencies")
 	assert.Equal(t, len(ops.ASet), len(correctOps.ASet), "Incorrect number of links in attractive set")
+	const eps = 1e-20
 	for k, v := range ops.Labels {
 		assert.Contains(t, correctOps.Labels, k, "Incorrect label key %s has met", k)
 		assert.InDelta(t, v, correctOps.Labels[k], eps, "Incorrect label value for node %s", k)
@@ -74,5 +71,4 @@ func TestHyperPaths(t *testing.T) {
 	for i, v := range ops.ASet {
 		assert.Equal(t, v, correctOps.ASet[i], "Incorrect link in attractive set at index %d", i)
 	}
-	t.Error(0)
 }

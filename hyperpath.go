@@ -19,12 +19,14 @@ type Strategy struct {
 }
 
 const (
-	Verbose           = false
 	ALPHA             = float32(1.0)
 	infiniteFrequency = float32(99999999999.0)
 )
 
-var mathINFf32 = float32(math.Inf(+1))
+var (
+	Verbose    = false
+	mathINFf32 = float32(math.Inf(+1))
+)
 
 func FindOptimalStrategy(allLinks []*Link, allStops map[string]struct{}, destination string) *Strategy {
 	/* 1.1 Initialization */
