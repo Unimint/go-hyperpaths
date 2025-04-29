@@ -59,7 +59,7 @@ func TestHyperPaths(t *testing.T) {
 			allLinks[8], // code gives y-y3
 			allLinks[6], // code gives y-b, error
 			allLinks[4], // code gives x2-y, error
-			allLinks[7], // code gives x-y3
+			allLinks[7], // code gives x-y3, error
 			allLinks[3], // code gives x-x2
 			allLinks[1], // code gives a-x2
 			allLinks[0], // code gives a-b
