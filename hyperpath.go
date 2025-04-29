@@ -58,21 +58,34 @@ func FindOptimalStrategy(allLinks []*Link, allStops map[string]struct{}, destina
 
 	// Build priority queue (S - active links)
 	// Track entries by FromNode for quick updates
-	entries := make(map[string]*pqEntry, len(allLinks))
+	entries := make(map[string][]*pqEntry, len(allLinks))
 	pq := make(PriorityQueue, 0, len(allLinks))
 	for _, link := range allLinks {
 		entry := &pqEntry{
 			link:     link,
 			priority: u[link.ToNode] + link.TravelCost,
 		}
-		entries[link.FromNode] = entry
+		entries[link.FromNode] = append(entries[link.FromNode], entry)
 		pq = append(pq, entry)
 	}
 	heap.Init(&pq)
 
 	for pq.Len() > 0 {
+		var checkHeap []*pqEntry
+		for pq.Len() > 0 {
+			entry := heap.Pop(&pq).(*pqEntry)
+			heap.Push(&pq, entry)
+			checkHeap = append(checkHeap, entry)
+		}
+		for _, entry := range checkHeap {
+			heap.Push(&pq, entry)
+		}
+
 		/* 1.2 Get next link */
 		entry := heap.Pop(&pq).(*pqEntry)
+		if entry.priority > 99999999 {
+			break
+		}
 		a := entry.link
 		i := a.FromNode
 		j := a.ToNode
@@ -127,8 +140,13 @@ func FindOptimalStrategy(allLinks []*Link, allStops map[string]struct{}, destina
 		// Update priority queue (for u[i])
 		for _, link := range allLinks {
 			if link.ToNode == i {
-				if entry, exists := entries[link.FromNode]; exists {
-					pq.update(entry, u[i]+link.TravelCost)
+				if iEntries, exists := entries[link.FromNode]; exists {
+					for _, entry := range iEntries {
+						if entry.link.ToNode == link.ToNode {
+							pq.update(entry, u[i]+link.TravelCost)
+							break
+						}
+					}
 				}
 			}
 		}
@@ -144,5 +162,6 @@ func FindOptimalStrategy(allLinks []*Link, allStops map[string]struct{}, destina
 		Freqs:  f,
 		ASet:   overlineA,
 	}
+
 	return strategy
 }
