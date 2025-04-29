@@ -68,7 +68,7 @@ func FindOptimalStrategy(allLinks []*Link, allStops map[string]struct{}, destina
 		entries[link.FromNode] = append(entries[link.FromNode], entry)
 		pq = append(pq, entry)
 	}
-	heap.Init(&pq)
+	pq.Init()
 
 	for pq.Len() > 0 {
 		/* 1.2 Get next link */
