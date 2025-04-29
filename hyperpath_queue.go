@@ -11,7 +11,7 @@ type pqEntry struct {
 type PriorityQueue []*pqEntry
 
 func (pq PriorityQueue) Len() int           { return len(pq) }
-func (pq PriorityQueue) Less(i, j int) bool { return pq[i].priority < pq[j].priority }
+func (pq PriorityQueue) Less(i, j int) bool { return pq[i].priority <= pq[j].priority }
 func (pq PriorityQueue) Swap(i, j int) {
 	pq[i], pq[j] = pq[j], pq[i]
 	pq[i].index = i

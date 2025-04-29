@@ -45,15 +45,24 @@ func TestHyperPaths(t *testing.T) {
 			"Y3": 1e+11,
 			"B":  0,
 		},
+		/* In paper it should be this actually */
+		// Y3-B
+		// Y-Y3
+		// X-Y3
+		// Y-B
+		// X2-Y
+		// X-X2
+		// A-X2
+		// A-B
 		ASet: []*Link{
 			allLinks[9],
-			allLinks[6],
 			allLinks[8],
-			allLinks[7],
+			allLinks[7], // code gives y-b
+			allLinks[6], // code gives x-y3
 			allLinks[4],
+			allLinks[3],
 			allLinks[1],
 			allLinks[0],
-			allLinks[3],
 		},
 	}
 	assert.Equal(t, len(ops.Labels), len(correctOps.Labels), "Incorrect number of labels")
