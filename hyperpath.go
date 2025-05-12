@@ -56,23 +56,32 @@ func FindOptimalStrategy(allLinks []*Link, allStops map[string]struct{}, destina
 	// Attractive set
 	overlineA := make([]*Link, 0, len(allLinks)/2) // Just prealloc some capacity
 
+	// Precompute a map of links by ToNode for faster updates
+	linksByToNode := make(map[string][]*Link)
+	for _, link := range allLinks {
+		linksByToNode[link.ToNode] = append(linksByToNode[link.ToNode], link)
+	}
+
 	// Build priority queue (S - active links)
 	// Track entries by FromNode for quick updates
-	entries := make(map[string]*pqEntry, len(allLinks))
+	entries := make(map[string][]*pqEntry, len(allLinks))
 	pq := make(PriorityQueue, 0, len(allLinks))
 	for _, link := range allLinks {
 		entry := &pqEntry{
 			link:     link,
 			priority: u[link.ToNode] + link.TravelCost,
 		}
-		entries[link.FromNode] = entry
+		entries[link.FromNode] = append(entries[link.FromNode], entry)
 		pq = append(pq, entry)
 	}
-	heap.Init(&pq)
+	pq.Init()
 
 	for pq.Len() > 0 {
 		/* 1.2 Get next link */
 		entry := heap.Pop(&pq).(*pqEntry)
+		if math.IsInf(float64(entry.priority), 1) || entry.priority >= mathINFf32 {
+			break
+		}
 		a := entry.link
 		i := a.FromNode
 		j := a.ToNode
@@ -124,11 +133,16 @@ func FindOptimalStrategy(allLinks []*Link, allStops map[string]struct{}, destina
 		// Update attractive set
 		overlineA = append(overlineA, a)
 
-		// Update priority queue (for u[i])
-		for _, link := range allLinks {
-			if link.ToNode == i {
-				if entry, exists := entries[link.FromNode]; exists {
-					pq.update(entry, u[i]+link.TravelCost)
+		// Update priority queue (for u[i]) - OPTIMIZED VERSION
+		if linksToUpdate, exists := linksByToNode[i]; exists {
+			for _, link := range linksToUpdate {
+				if iEntries, hasEntries := entries[link.FromNode]; hasEntries {
+					for _, entry := range iEntries {
+						if entry.link.ToNode == i && entry.link.FromNode == link.FromNode {
+							pq.update(entry, u[i]+link.TravelCost)
+							break
+						}
+					}
 				}
 			}
 		}
