@@ -157,9 +157,5 @@ func FindOptimalStrategy(allLinks []*Link, allStops map[string]struct{}, destina
 		Freqs:  f,
 		ASet:   overlineA,
 	}
-	fmt.Printf("\n\nASet\n")
-	for _, link := range overlineA {
-		fmt.Printf("%s%s\n", link.FromNode, link.ToNode)
-	}
 	return strategy
 }
